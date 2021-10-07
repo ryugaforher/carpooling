@@ -1,0 +1,78 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LogIn</title>
+</head>
+<body>
+  
+
+{% load static %}
+<link href="{% static 'css/login.css' %}" rel="stylesheet" type="text/css" media="all" />
+<form class="login-form" action="/login/{{refer}}" method="POST" >
+  {% csrf_token %}
+  
+    <p class="login-text">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-lock fa-stack-1x"></i>
+      </span>
+    </p>
+    <input type="email" class="login-username" autofocus="true" required="true" placeholder="Email" name="email" />
+    <input type="password" class="login-password" required="true" placeholder="Password" name="password" />
+    <input type="submit" name="Login" value="Login" class="login-submit" id="submit" />
+  </form>
+  <div>
+  <p id="error"></p>
+  </div>
+  <a href="/reset" class="login-forgot-pass">forgot password?</a>
+  <div class="underlay-photo"></div>
+  <div class="underlay-black"></div> 
+  <script src="{% static 'js/jquery.js' %}"></script>
+  <script>
+    $("#submit").click(
+        function(e){
+            e.preventDefault();
+            var email= $(".login-username").val();
+            var password=$(".login-password").val();
+            
+            $.ajax({
+                url: $(".login-form").attr('action'),
+                method:"POST",
+                data:{
+                    'email':email,
+                    'password':password,
+                    
+                    'csrfmiddlewaretoken' : '{{ csrf_token }}',
+                    
+                },
+                
+                dataType: 'json',
+                success: function(data){
+                  if(data['status']==1){
+                    
+                     window.location.href=(data['refer'])}
+                  else if(data['status']==3){
+                    alert("You have been blocked from logging in for 1 hour after sucpiscious attempts")
+                  }
+                  else {alert("Incorrect of either Email or Password");
+                $("input:not(.login-submit)").val("")
+                };
+                
+  
+            }
+           
+            
+            
+            })
+        }
+        
+        
+    )
+</script>
+</body>
+</html>

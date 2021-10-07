@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password|reset</title>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <link href="{% static 'css/login.css' %}" rel="stylesheet" type="text/css" media="all" />
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" media="all" />
+</head>
+<body>
+ <div class="form-gap"></div>
+<div class="container">
+    
+	<div class="row" >
+        <div class="col-md-4 col-md-offset-4"></div>
+		<div class="col-md-4 col-md-offset-4">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="text-center">
+                  <h3><i class="fa fa-lock fa-4x"></i></h3>
+                  <h2 class="text-center">Forgot Password?</h2>
+                  <p>You can reset your password here.</p><br>
+                  <p id="nomail"></p>
+                  <div class="panel-body">
+    
+                    <form id="register-form" role="form" autocomplete="off" class="form" method="post" action="/reset">
+    
+                      <div class="form-group">
+                        <div class="input-group">
+                          <span class="input-group-addon"><i class="glyphicon glyphicon-envelope color-blue"></i></span>
+                          <input id="email" name="email" placeholder="email address" class="form-control"  type="email">
+                        </div>
+                      </div>
+                      
+                      
+                       
+                    </form>
+                    <div class="form-group">
+                        <input name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Reset Password" type="submit">
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+	</div>
+</div>
+      <style>.form-gap {
+          
+         
+        padding-top: 100px;
+    }</style>
+    <script>
+        $("input[name='recover-submit']").click(
+            function(e){
+                
+                $.ajax(
+                    {
+                        url: '/reset',
+                        method:"POST",
+                        data:{
+                            'email':$("#email").val(),
+                            
+                            'csrfmiddlewaretoken' : '{{ csrf_token }}',
+                            
+                        },
+                        dataType:'json',
+                        success:function(data){
+                            if (data['status']==1){
+                                $("#nomail").text("check your email box. Don't forget spam")
+                            }
+                            else if(data['status']==2){
+                              $("#nomail").text("You can't reset passoword right now for security reasons.Try later")
+                            }
+                            else{
+                            $("#nomail").text("No such email exists")
+                            }
+                        }
+                    }
+                )
+            
+                     } )
+    </script>
+</body>
+</html>

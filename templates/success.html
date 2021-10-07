@@ -1,0 +1,43 @@
+
+
+{% if success is 1 %}
+<p>Your account registered</p>
+
+{% elif success is 2 %}
+<p>Check your email</p>
+
+{% elif success is 3 %}
+<p>Email already exists.Go to login page</p>
+
+{% elif success is 4 %}
+<style type="text/css">
+.inline {
+    display: inline;
+  }
+  
+  .link-button {
+    background: none;
+    border: none;
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: serif;
+  }
+  .link-button:focus {
+    outline: none;
+  }
+  .link-button:active {
+    color:red;
+  }
+</style>
+<p>Link has expired</p><br>
+<form method="POST" action="../../register" display="inline">
+    {% csrf_token %}
+ <input type="hidden" name="email" value="{{ email }}">
+ <button type="submit" name="submit" class="link-button">Resend activation link</button>  
+</form>
+
+{% else %}
+<p>No such email exists.Please go to register page</p>
+{% endif %}

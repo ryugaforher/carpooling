@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password|reset</title>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" media="all" />
+</head>
+<body>
+    <div class="container bootstrap snippets bootdey">
+        {% if status %}
+        <form action="/change-password" method="post">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-md-offset-2">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-6 col-md-6 separator social-login-box"> <br>
+                                                      
+                            </div>
+                            <div style="margin-top:80px;" class="col-xs-6 col-sm-6 col-md-6 login-box">
+                             <div class="form-group">
+                                <div class="input-group">
+                                  <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                                  <input class="form-control" id="pass" type="password" name="password" placeholder="New Password">
+                                </div>
+                              </div>
+                            </form>
+                              <div class="form-group">
+                                <div class="input-group">
+                                  <div class="input-group-addon"><span class="glyphicon glyphicon-log-in"></span></div>
+                                  <input class="form-control" id="pass2" type="password" placeholder="Confirm Password">
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-6 col-md-6"></div>
+                            <div class="col-xs-6 col-sm-6 col-md-6" >
+                                <button class="btn icon-btn-save btn-success" id="submit-button" type="submit" disabled>
+                                <span class="btn-save-label"></span>Save</button><br>
+                                <p id="pass-match"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {% else %}
+        <h1>Invalid or expired link...</h1>
+        {% endif %}
+    </div>
+    <style>body{
+        background:#eee;
+        }
+        .separator {
+            border-right: 1px solid #dfdfe0; 
+        }
+        .icon-btn-save {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        .input-group {
+            margin-bottom:10px; 
+        }
+        .btn-save-label {
+            position: relative;
+            left: -12px;
+            display: inline-block;
+            padding: 6px 12px;
+            background: rgba(0,0,0,0.15);
+            border-radius: 3px 0 0 3px;
+        }</style>
+        <script>
+            $(".form-control").keyup(
+                function(){
+                    pass2=$("#pass2").val()
+                
+                if (pass2){
+                    pass=$("#pass").val()
+                    if (pass != pass2){
+                        $("#pass-match").text("Password not matching")
+                        $("#submit-button").prop('disabled', true);
+                    }
+                    else{
+                        $("#pass-match").text("")
+                        $("#submit-button").removeAttr("disabled")
+                    }
+                }
+                else{
+                    $("#submit-button").prop('disabled', true);
+                }
+            }
+            )
+        </script>
+</body>
+
+</html>
